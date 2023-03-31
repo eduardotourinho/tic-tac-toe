@@ -13,11 +13,7 @@ import java.util.stream.IntStream;
 public class PlayValidator {
 
     public boolean playIsValid(Game game, PlayerEnum player) {
-        var hasEmptySpaces = game.getBoard().getGrid().values().stream()
-                .anyMatch(playerEnum -> playerEnum == PlayerEnum.EMPTY);
-
-        return hasEmptySpaces
-                && (game.getLastPlay() == null || game.getLastPlay().player() != player);
+        return (game.getLastPlay() == null || game.getLastPlay().player() != player);
     }
 
     public boolean hasPlayerWon(@NonNull Board board, @NonNull final PlayerEnum player) {

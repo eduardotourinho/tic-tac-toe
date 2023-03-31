@@ -36,25 +36,6 @@ public class PlayValidatorTest {
         assertFalse(subject.playIsValid(game, PlayerEnum.O));
     }
 
-    @Test
-    public void shouldReturnFalseOnFullBoard() {
-        var board = new Board(3, 3);
-        for (int row = 0; row < board.getRows(); row++) {
-            for (int col = 0; col < board.getColumns(); col++) {
-                board.add(PlayerEnum.X, new Position(row, col));
-            }
-        }
-
-        var lastPlay = new Play(PlayerEnum.X, new Position(1, 1));
-        var game = Game.builder()
-                .state(Game.State.PLAYING)
-                .board(board)
-                .lastPlay(lastPlay)
-                .build();
-
-        assertFalse(subject.playIsValid(game, PlayerEnum.O));
-    }
-
     @ParameterizedTest
     @EnumSource(value = PlayerEnum.class, names = { "X", "EMPTY" })
     public void shouldReturnTrueWhenLastPlayIsNotTheSameOrEmpty(PlayerEnum lastPlayer) {

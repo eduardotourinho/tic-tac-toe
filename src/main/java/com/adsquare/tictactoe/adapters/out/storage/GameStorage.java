@@ -4,6 +4,7 @@ import com.adsquare.tictactoe.adapters.out.storage.entities.GameEntity;
 import com.adsquare.tictactoe.adapters.out.storage.exceptions.GameNotFoundException;
 import com.adsquare.tictactoe.adapters.out.storage.mappers.GameMapper;
 import com.adsquare.tictactoe.adapters.out.storage.repositories.GameRepository;
+import com.adsquare.tictactoe.domain.models.Board;
 import com.adsquare.tictactoe.domain.models.Game;
 import com.adsquare.tictactoe.domain.ports.GameLoaderPort;
 import com.adsquare.tictactoe.domain.ports.SaveGameUseCase;

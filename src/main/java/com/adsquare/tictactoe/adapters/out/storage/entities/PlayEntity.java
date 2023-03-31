@@ -12,11 +12,13 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name="plays")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="plays",
+        uniqueConstraints = @UniqueConstraint(name = "key_plays_game_row_column",
+                columnNames = {"game_id", "play_row", "play_column"}))
 public class PlayEntity {
 
     @Id

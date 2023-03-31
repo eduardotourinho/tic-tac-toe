@@ -18,6 +18,6 @@ public class Game {
     Play lastPlay;
 
     public enum State {
-        PLAYING, FINISHED
+        PLAYING, FINISHED, WIN
     }
 }

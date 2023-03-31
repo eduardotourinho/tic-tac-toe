@@ -29,12 +29,14 @@ public class GameMapper {
     }
 
     public Game fromStorage(@NonNull GameEntity gameEntity) {
+        var emptyBoard = new Board(gameEntity.getBoardSize(), gameEntity.getBoardSize());
         var gameBuilder = Game.builder()
                 .id(gameEntity.getId())
-                .state(State.valueOf(gameEntity.getState()));
+                .state(State.valueOf(gameEntity.getState()))
+                .board(emptyBoard);
 
         if (gameEntity.getPlays() != null) {
-            var board = generateBoard(gameEntity.getBoardSize(), gameEntity.getPlays());
+            var board = generateBoard(emptyBoard, gameEntity.getPlays());
             var lastPlay = getLastPlay(gameEntity.getPlays());
 
             gameBuilder.board(board)
@@ -44,9 +46,7 @@ public class GameMapper {
         return gameBuilder.build();
     }
 
-    private Board generateBoard(int boardSize, @NonNull List<PlayEntity> plays) {
-        final var board = new Board(boardSize, boardSize);
-
+    private Board generateBoard(@NonNull final Board board, @NonNull List<PlayEntity> plays) {
         plays.forEach(playEntity -> {
             var player = PlayerEnum.valueOf(playEntity.getPlayer());
             var position = new Position(playEntity.getRow(), playEntity.getColumn());

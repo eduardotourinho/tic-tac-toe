@@ -1,8 +1,6 @@
 package com.adsquare.tictactoe.domain.services.validators;
 
-import com.adsquare.tictactoe.domain.models.Board;
-import com.adsquare.tictactoe.domain.models.PlayerEnum;
-import com.adsquare.tictactoe.domain.models.Position;
+import com.adsquare.tictactoe.domain.models.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +19,25 @@ public class BoardValidatorTest {
     @BeforeEach
     public void setup() {
         subject = new BoardValidator();
+    }
+
+    @Test
+    public void shouldReturnTrueIfBoardHasEmptySpaces() {
+        var board = new Board(3, 3);
+
+        assertTrue(subject.hasEmptySpaces(board));
+    }
+
+    @Test
+    public void shouldReturnFalseIfBoardHasNoEmptySpaces() {
+        var board = new Board(3, 3);
+        for (int row = 0; row < board.getRows(); row++) {
+            for (int col = 0; col < board.getColumns(); col++) {
+                board.add(PlayerEnum.X, new Position(row, col));
+            }
+        }
+
+        assertFalse(subject.hasEmptySpaces(board));
     }
 
     @Test
