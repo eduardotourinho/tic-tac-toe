@@ -11,11 +11,16 @@ import java.util.List;
 public class ResponseMapper {
 
     public GameResponse gameResponseMapper(Game game) {
-        return GameResponse.builder()
+        var response = GameResponse.builder()
                 .id(game.getId().toString())
                 .state(game.getState().name())
-                .board(mapBoard(game))
-                .build();
+                .board(mapBoard(game));
+
+        if (game.getState() == Game.State.WIN) {
+            response.winner(game.getLastPlay().player().name());
+        }
+
+        return response.build();
     }
 
     private GameResponse.Board mapBoard(Game game) {

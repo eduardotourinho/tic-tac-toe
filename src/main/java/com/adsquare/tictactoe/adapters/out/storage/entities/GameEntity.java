@@ -1,6 +1,7 @@
 package com.adsquare.tictactoe.adapters.out.storage.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,8 +22,13 @@ import java.util.UUID;
 public class GameEntity {
 
     @Id
+    @NotNull
     private UUID id;
+
+    @NotNull
     private int boardSize;
+
+    @NotNull
     private String state;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -47,7 +47,6 @@ public class GameService {
         return game;
     }
 
-    @Transactional(noRollbackFor = {GameNotAvailableException.class, PlayerAlreadyPlayedException.class, BoardGridNotEmptyException.class})
     public Game play(@NonNull UUID gameId, @NonNull PlayerEnum player, @NonNull Position position) {
 
         // 1. load

@@ -1,6 +1,8 @@
 package com.adsquare.tictactoe.adapters.out.storage.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,13 +28,18 @@ public class PlayEntity {
     @UuidGenerator
     private UUID id;
 
+    @NotBlank
+    @NotNull
     private String player;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private GameEntity game;
 
+    @NotNull
     @Column(name = "play_row")
     private int row;
+
+    @NotNull
     @Column(name = "play_column")
     private int column;
 
