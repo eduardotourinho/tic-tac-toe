@@ -61,6 +61,16 @@ If you use `IntelliJ`, just run the `TicTacToeApplication`
 - Database H2 (Embedded)
 - JUnit 5
 
+### Code architecture
+
+The code is structured using the [Hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) pattern.
+
+- `domain` package: contain all the business logic from the game
+- `adapters` package: contain the dependencies for the project:
+    - `rest`: controller/request codes
+    - `storage`: database/storage code.
+    
+
 ### Database choice
 
 The embedded H2 database was chosen to speed up the development and not to depend on any external databases avoid the creation of docker-compose files.
