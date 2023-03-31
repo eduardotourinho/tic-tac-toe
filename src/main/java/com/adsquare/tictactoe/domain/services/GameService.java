@@ -14,7 +14,6 @@ import com.adsquare.tictactoe.domain.services.validators.PlayValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
