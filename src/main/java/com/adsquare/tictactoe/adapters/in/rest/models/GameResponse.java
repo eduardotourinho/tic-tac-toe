@@ -1,6 +1,7 @@
 package com.adsquare.tictactoe.adapters.in.rest.models;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Value;
 
@@ -13,6 +14,9 @@ public class GameResponse {
     String id;
     String state;
     Board board;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    String winner;
 
     @Value
     @Builder

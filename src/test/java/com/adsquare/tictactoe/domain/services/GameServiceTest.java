@@ -42,6 +42,7 @@ class GameServiceTest {
         var game = Game.builder()
                 .id(UUID.randomUUID())
                 .state(Game.State.PLAYING)
+                .board(new Board(3, 3))
                 .build();
 
         when(saveGameUseCaseMock.startNewGame(3))
@@ -103,6 +104,8 @@ class GameServiceTest {
                 .thenReturn(true);
         when(playValidatorMock.hasPlayerWon(game.getBoard(), PlayerEnum.X))
                 .thenReturn(false);
+        when(boardValidatorMock.hasEmptySpaces(game.getBoard()))
+                .thenReturn(true);
         when(saveGameUseCaseMock.saveGameState(game))
                 .thenReturn(game);
 
@@ -121,7 +124,7 @@ class GameServiceTest {
     }
 
     @Test
-    public void shouldAllowPlayAndFinishGameWithoutErrorsAndSaveGameState() {
+    public void shouldWinGameWithoutErrorsAndSaveGameState() {
         final var gameId = UUID.randomUUID();
         final var playPosition = new Position(1, 1);
 
@@ -149,6 +152,47 @@ class GameServiceTest {
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
+        assertEquals(Game.State.WIN, actualGame.getState());
+        assertEquals(PlayerEnum.X, actualGame.getBoard().getPlayerAt(playPosition));
+
+        verify(gameLoaderPortMock, times(1))
+                .loadGame(gameId);
+        verify(saveGameUseCaseMock, times(1))
+                .saveGameState(game);
+        verifyNoMoreInteractions(saveGameUseCaseMock);
+    }
+
+    @Test
+    public void shouldFinishGameWithoutErrorsAndSaveGameState() {
+        final var gameId = UUID.randomUUID();
+        final var playPosition = new Position(1, 1);
+
+        var game = Game.builder()
+                .id(gameId)
+                .state(Game.State.PLAYING)
+                .board(new Board(3,3))
+                .lastPlay(null)
+                .build();
+
+        when(gameLoaderPortMock.loadGame(gameId))
+                .thenReturn(game);
+        when(gameValidatorMock.gameIsValid(game))
+                .thenReturn(true);
+        when(playValidatorMock.playIsValid(game, PlayerEnum.X))
+                .thenReturn(true);
+        when(boardValidatorMock.playIsValid(game.getBoard(), playPosition))
+                .thenReturn(true);
+        when(playValidatorMock.hasPlayerWon(game.getBoard(), PlayerEnum.X))
+                .thenReturn(false);
+        when(boardValidatorMock.hasEmptySpaces(game.getBoard()))
+                .thenReturn(false);
+        when(saveGameUseCaseMock.saveGameState(game))
+                .thenReturn(game);
+
+        var actualGame = subject.play(gameId, PlayerEnum.X, playPosition);
+
+        assertEquals(gameId, actualGame.getId());
+        assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
         assertEquals(Game.State.FINISHED, actualGame.getState());
         assertEquals(PlayerEnum.X, actualGame.getBoard().getPlayerAt(playPosition));
 
@@ -158,6 +202,7 @@ class GameServiceTest {
                 .saveGameState(game);
         verifyNoMoreInteractions(saveGameUseCaseMock);
     }
+
 
     @Test
     public void shouldThrowGameNotAvailableExceptionWhenPlayingInAFinishedGame() {
@@ -182,11 +227,14 @@ class GameServiceTest {
     @Test
     public void shouldThrowPlayerAlreadyPlayedExceptionWhenPlayerAlreadyPlayed() {
         final var gameId = UUID.randomUUID();
+        final var nextPlayPosition = new Position(1,1);
+        var board = new Board(3,3);
+        board.add(PlayerEnum.X, new Position(0, 1));
 
         var game = Game.builder()
                 .id(gameId)
                 .state(Game.State.FINISHED)
-                .board(new Board(3,3))
+                .board(board)
                 .lastPlay(null)
                 .build();
 
@@ -194,11 +242,13 @@ class GameServiceTest {
                 .thenReturn(game);
         when(gameValidatorMock.gameIsValid(game))
                 .thenReturn(true);
+        when(boardValidatorMock.playIsValid(board, nextPlayPosition))
+                .thenReturn(true);
         when(playValidatorMock.playIsValid(game, PlayerEnum.X))
                 .thenReturn(false);
 
         assertThrows(PlayerAlreadyPlayedException.class,
-                () -> subject.play(gameId, PlayerEnum.X, new Position(1,1)));
+                () -> subject.play(gameId, PlayerEnum.X, nextPlayPosition));
     }
 
     @Test
@@ -207,7 +257,7 @@ class GameServiceTest {
         final var playPosition = new Position(1,1);
 
         var board = new Board(3,3);
-        board.add(PlayerEnum.O, playPosition);
+        board.add(PlayerEnum.X, new Position(1,1));
 
         var game = Game.builder()
                 .id(gameId)
@@ -220,8 +270,6 @@ class GameServiceTest {
         when(gameLoaderPortMock.loadGame(gameId))
                 .thenReturn(game);
         when(gameValidatorMock.gameIsValid(game))
-                .thenReturn(true);
-        when(playValidatorMock.playIsValid(game, PlayerEnum.X))
                 .thenReturn(true);
         when(boardValidatorMock.playIsValid(game.getBoard(), playPosition))
                 .thenReturn(false);

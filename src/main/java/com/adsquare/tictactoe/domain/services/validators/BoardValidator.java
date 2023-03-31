@@ -8,9 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BoardValidator {
 
+    public boolean hasEmptySpaces(Board board) {
+        return board.getGrid().values().stream()
+                .anyMatch(playerEnum -> playerEnum == PlayerEnum.EMPTY);
+    }
+
     public boolean playIsValid(Board board, Position position) {
 
-        if (isOutOfBounds(board, position)) {
+        if (!hasEmptySpaces(board) || isOutOfBounds(board, position)) {
             return false;
         }
 
