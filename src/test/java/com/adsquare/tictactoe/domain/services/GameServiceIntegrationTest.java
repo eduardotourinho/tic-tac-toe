@@ -4,24 +4,18 @@ import com.adsquare.tictactoe.domain.exceptions.BoardGridNotEmptyException;
 import com.adsquare.tictactoe.domain.exceptions.GameNotAvailableException;
 import com.adsquare.tictactoe.domain.exceptions.PlayerAlreadyPlayedException;
 import com.adsquare.tictactoe.domain.models.*;
-import com.adsquare.tictactoe.domain.ports.GameLoaderPort;
-import com.adsquare.tictactoe.domain.ports.SaveGameUseCase;
-import com.adsquare.tictactoe.domain.services.validators.BoardValidator;
-import com.adsquare.tictactoe.domain.services.validators.GameValidator;
-import com.adsquare.tictactoe.domain.services.validators.PlayValidator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @SpringBootTest
 @ActiveProfiles("integration-test")

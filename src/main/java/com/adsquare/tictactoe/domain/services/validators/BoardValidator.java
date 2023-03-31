@@ -1,7 +1,6 @@
 package com.adsquare.tictactoe.domain.services.validators;
 
 import com.adsquare.tictactoe.domain.models.Board;
-import com.adsquare.tictactoe.domain.models.Game;
 import com.adsquare.tictactoe.domain.models.PlayerEnum;
 import com.adsquare.tictactoe.domain.models.Position;
 import org.springframework.stereotype.Component;
