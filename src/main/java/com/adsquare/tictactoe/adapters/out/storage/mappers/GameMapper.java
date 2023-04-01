@@ -2,8 +2,8 @@ package com.adsquare.tictactoe.adapters.out.storage.mappers;
 
 import com.adsquare.tictactoe.adapters.out.storage.entities.GameEntity;
 import com.adsquare.tictactoe.adapters.out.storage.entities.PlayEntity;
-import com.adsquare.tictactoe.domain.models.*;
-import com.adsquare.tictactoe.domain.models.Game.State;
+import com.adsquare.tictactoe.application.domain.models.*;
+import com.adsquare.tictactoe.application.domain.models.Game.State;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 

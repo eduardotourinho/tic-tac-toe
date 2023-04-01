@@ -1,8 +1,8 @@
 package com.adsquare.tictactoe.adapters.in.rest.mappers;
 
 import com.adsquare.tictactoe.adapters.in.rest.models.GameResponse;
-import com.adsquare.tictactoe.domain.models.Board;
-import com.adsquare.tictactoe.domain.models.Game;
+import com.adsquare.tictactoe.application.domain.models.Board;
+import com.adsquare.tictactoe.application.domain.models.Game;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

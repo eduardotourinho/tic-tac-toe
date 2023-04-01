@@ -1,7 +1,7 @@
 package com.adsquare.tictactoe.adapters.in.rest.mappers;
 
 import com.adsquare.tictactoe.adapters.in.rest.models.GameResponse;
-import com.adsquare.tictactoe.domain.models.*;
+import com.adsquare.tictactoe.application.domain.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
