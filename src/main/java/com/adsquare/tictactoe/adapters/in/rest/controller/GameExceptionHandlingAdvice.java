@@ -1,9 +1,10 @@
 package com.adsquare.tictactoe.adapters.in.rest.controller;
 
 import com.adsquare.tictactoe.adapters.in.rest.models.ErrorResponse;
-import com.adsquare.tictactoe.domain.exceptions.BoardGridNotEmptyException;
-import com.adsquare.tictactoe.domain.exceptions.GameNotAvailableException;
-import com.adsquare.tictactoe.domain.exceptions.PlayerAlreadyPlayedException;
+import com.adsquare.tictactoe.application.domain.exceptions.GridPositionNotEmpty;
+import com.adsquare.tictactoe.application.domain.exceptions.GameAlreadyFinishedException;
+import com.adsquare.tictactoe.application.domain.exceptions.PlayerAlreadyPlayedException;
+import com.adsquare.tictactoe.application.exceptions.GameNotExistException;
 import jakarta.annotation.Nonnull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,11 @@ public class GameExceptionHandlingAdvice {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler({PlayerAlreadyPlayedException.class, BoardGridNotEmptyException.class})
+    @ExceptionHandler({
+            PlayerAlreadyPlayedException.class,
+            GridPositionNotEmpty.class,
+            GameAlreadyFinishedException.class
+    })
     public ResponseEntity<ErrorResponse> handlePlayerAlreadyPlayedException(RuntimeException ex,
                                                                             @Nonnull NativeWebRequest request) {
 
@@ -50,8 +55,8 @@ public class GameExceptionHandlingAdvice {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(GameNotAvailableException.class)
-    public ResponseEntity<ErrorResponse> handleGameNotAvailableException(GameNotAvailableException ex,
+    @ExceptionHandler(GameNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleGameNotExistException(GameNotExistException ex,
                                                                          @Nonnull NativeWebRequest request) {
         return ResponseEntity.notFound().build();
     }

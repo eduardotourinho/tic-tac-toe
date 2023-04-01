@@ -2,9 +2,9 @@ package com.adsquare.tictactoe.adapters.out.storage;
 
 import com.adsquare.tictactoe.adapters.out.storage.repositories.GameRepository;
 import com.adsquare.tictactoe.adapters.out.storage.repositories.PlaysRepository;
-import com.adsquare.tictactoe.domain.models.Play;
-import com.adsquare.tictactoe.domain.models.PlayerEnum;
-import com.adsquare.tictactoe.domain.models.Position;
+import com.adsquare.tictactoe.application.domain.models.Play;
+import com.adsquare.tictactoe.application.domain.models.PlayerEnum;
+import com.adsquare.tictactoe.application.domain.models.Position;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
