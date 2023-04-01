@@ -3,7 +3,7 @@ package com.adsquare.tictactoe.adapters.in.rest.controller;
 import com.adsquare.tictactoe.adapters.in.rest.models.ErrorResponse;
 import com.adsquare.tictactoe.adapters.in.rest.models.GameResponse;
 import com.adsquare.tictactoe.adapters.in.rest.models.PlayRequest;
-import com.adsquare.tictactoe.application.services.GameManager;
+import com.adsquare.tictactoe.application.ports.in.ManageGameUseCase;
 import com.adsquare.tictactoe.application.domain.models.Board;
 import com.adsquare.tictactoe.application.domain.models.Game;
 import com.adsquare.tictactoe.application.domain.models.PlayerEnum;
@@ -36,7 +36,7 @@ class GameControllerIntegrationTest {
     private int port;
 
     @MockBean
-    private GameManager gameManagerMock;
+    private ManageGameUseCase manageGameUseCaseMock;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -52,10 +52,10 @@ class GameControllerIntegrationTest {
                 .board(new Board(3,3))
                 .build();
 
-        when(gameManagerMock.startNewGame(3))
+        when(manageGameUseCaseMock.startNewGame(3))
                 .thenReturn(testGame);
 
-        when(gameManagerMock.loadGame(uuid))
+        when(manageGameUseCaseMock.loadGame(uuid))
                 .thenReturn(testGame);
     }
 
@@ -95,7 +95,7 @@ class GameControllerIntegrationTest {
     public void shouldPlayerPlayGameAndReturnJson() {
         testGame.getBoard().add(PlayerEnum.X, new Position(1, 1));
         var playRoundCommand = new PlayRoundCommand(testGame.getId(), "X", 1, 1);
-        when(gameManagerMock.playRound(playRoundCommand))
+        when(manageGameUseCaseMock.playRound(playRoundCommand))
                 .thenReturn(testGame);
 
         var createUrl = url("/game");
