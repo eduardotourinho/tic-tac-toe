@@ -1,4 +1,4 @@
-# Tic Tac Toe API for Adsquare
+# Tic Tac Toe API
 
 ## Endpoints
 
