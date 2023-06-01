@@ -8,7 +8,7 @@ import com.gamemechanics.tictactoe.application.domain.models.Board;
 import com.gamemechanics.tictactoe.application.domain.models.Game;
 import com.gamemechanics.tictactoe.application.domain.models.PlayerEnum;
 import com.gamemechanics.tictactoe.application.domain.models.Position;
-import com.gamemechanics.tictactoe.application.ports.in.PlayGameUseCase;
+import com.gamemechanics.tictactoe.application.ports.in.GamePlayUseCase;
 import com.gamemechanics.tictactoe.application.ports.in.command.PlayRoundCommand;
 import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -29,6 +30,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("integration-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 class GameControllerIntegrationTest {
@@ -40,7 +42,7 @@ class GameControllerIntegrationTest {
     private ManageGameUseCase manageGameUseCaseMock;
 
     @MockBean
-    private PlayGameUseCase playGameUseCase;
+    private GamePlayUseCase gamePlayUseCase;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -56,7 +58,7 @@ class GameControllerIntegrationTest {
                 .board(new Board(3,3))
                 .build();
 
-        when(manageGameUseCaseMock.startNewGame(3))
+        when(manageGameUseCaseMock.createGame(3))
                 .thenReturn(testGame);
 
         when(manageGameUseCaseMock.loadGame(uuid))
@@ -98,8 +100,8 @@ class GameControllerIntegrationTest {
     @Test
     public void shouldPlayerPlayGameAndReturnJson() {
         testGame.getBoard().add(PlayerEnum.X, new Position(1, 1));
-        var playRoundCommand = new PlayRoundCommand(testGame.getId(), "X", 1, 1);
-        when(playGameUseCase.playRound(playRoundCommand))
+        var playRoundCommand = new PlayRoundCommand(testGame.getId(), "X", new Position(1, 1));
+        when(gamePlayUseCase.playRound(playRoundCommand))
                 .thenReturn(testGame);
 
         var createUrl = url("/game");

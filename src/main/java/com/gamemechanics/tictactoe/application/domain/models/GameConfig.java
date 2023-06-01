@@ -1,4 +1,4 @@
-package com.gamemechanics.tictactoe.adapters.in.console.models;
+package com.gamemechanics.tictactoe.application.domain.models;
 
 public record GameConfig(PlayerPersonaEnum xPlayer, PlayerPersonaEnum oPlayer) {
 }

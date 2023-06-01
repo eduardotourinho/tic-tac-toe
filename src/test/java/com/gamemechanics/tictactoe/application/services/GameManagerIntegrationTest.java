@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameManagerIntegrationTest {
 
     @Autowired
-    private GameManager subject;
+    private GameManagerPlay subject;
 
     @Test
     public void shouldCreateANewGameWithEmptyBoard() {
-        var actualGame = subject.startNewGame(3);
+        var actualGame = subject.createGame(3);
 
         assertNotNull(actualGame.getBoard());
         assertNull(actualGame.getLastPlay());
@@ -32,7 +32,7 @@ class GameManagerIntegrationTest {
 
     @Test
     public void shouldLoadTheGame() {
-        var newGame = subject.startNewGame(3);
+        var newGame = subject.createGame(3);
 
         var actualGame = subject.loadGame(newGame.getId());
 
@@ -48,9 +48,9 @@ class GameManagerIntegrationTest {
 
     @Test
     public void shouldAllowPlayARoundSuccessfullyAndReturnNewGameState() {
-        var newGame = subject.startNewGame(3);
+        var newGame = subject.createGame(3);
 
-        var playCommand = new PlayRoundCommand(newGame.getId(), "X", 1, 1);
+        var playCommand = new PlayRoundCommand(newGame.getId(), "X", new Position(1, 1));
         var actual = subject.playRound(playCommand);
 
         assertEquals(newGame.getId(), actual.getId());

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface ManageGameUseCase {
 
-    Game startNewGame(int boardSize);
+    Game createGame(int boardSize);
 
     Game loadGame(UUID gameId);
 }

@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GamePlayService {
+public class GameTurnService {
 
     private final GameValidator gameValidator;
     private final BoardValidator boardValidator;
     private final PlayValidator playValidator;
 
-    public Game playRound(@NonNull Game game, @NonNull PlayerEnum player, @NonNull Position position) {
+    public Game playTurn(@NonNull Game game, @NonNull PlayerEnum player, @NonNull Position position) {
 
         if (!gameValidator.gameIsValid(game)) {
             throw new GameAlreadyFinishedException(game.getId());

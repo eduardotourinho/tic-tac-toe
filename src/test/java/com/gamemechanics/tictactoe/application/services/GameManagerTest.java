@@ -1,7 +1,7 @@
 package com.gamemechanics.tictactoe.application.services;
 
 import com.gamemechanics.tictactoe.application.domain.models.*;
-import com.gamemechanics.tictactoe.application.domain.services.GamePlayService;
+import com.gamemechanics.tictactoe.application.domain.services.GameTurnService;
 import com.gamemechanics.tictactoe.application.ports.in.command.PlayRoundCommand;
 import com.gamemechanics.tictactoe.application.ports.out.FindGameUseCase;
 import com.gamemechanics.tictactoe.application.ports.out.SaveGameUseCase;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class GameManagerTest {
 
     @Mock
-    private GamePlayService gamePlayServiceMock;
+    private GameTurnService gameTurnServiceMock;
 
     @Mock
     private SaveGameUseCase saveGameUseCaseMock;
@@ -29,7 +29,7 @@ class GameManagerTest {
     private FindGameUseCase findGameUseCaseMock;
 
     @InjectMocks
-    private GameManager subject;
+    private GameManagerPlay subject;
 
     @Test
     public void shouldCreateANewGameWithEmptyBoard() {
@@ -42,7 +42,7 @@ class GameManagerTest {
         when(saveGameUseCaseMock.startNewGame(3))
                 .thenReturn(game);
 
-        var actualGame = subject.startNewGame(3);
+        var actualGame = subject.createGame(3);
 
         assertEquals(game.getBoard(), actualGame.getBoard());
         assertEquals(game.getLastPlay(), actualGame.getLastPlay());
@@ -52,7 +52,7 @@ class GameManagerTest {
 
         verifyNoMoreInteractions(saveGameUseCaseMock);
         verifyNoInteractions(findGameUseCaseMock);
-        verifyNoInteractions(gamePlayServiceMock);
+        verifyNoInteractions(gameTurnServiceMock);
     }
 
     @Test
@@ -83,7 +83,7 @@ class GameManagerTest {
         assertEquals(PlayerEnum.X, actualGame.getBoard().getPlayerAt(playPosition));
 
         verifyNoMoreInteractions(findGameUseCaseMock);
-        verifyNoInteractions(gamePlayServiceMock);
+        verifyNoInteractions(gameTurnServiceMock);
     }
 
     @Test
@@ -105,10 +105,10 @@ class GameManagerTest {
                 .thenReturn(game);
         when(saveGameUseCaseMock.saveGameState(game))
                 .thenReturn(game);
-        when(gamePlayServiceMock.playRound(game, PlayerEnum.X, playPosition))
+        when(gameTurnServiceMock.playTurn(game, PlayerEnum.X, playPosition))
                 .thenReturn(game);
 
-        var playCommand = new PlayRoundCommand(gameId, "X", 1, 1);
+        var playCommand = new PlayRoundCommand(gameId, "X", new Position(1, 1));
         var actual = subject.playRound(playCommand);
 
         assertEquals(gameId, actual.getId());

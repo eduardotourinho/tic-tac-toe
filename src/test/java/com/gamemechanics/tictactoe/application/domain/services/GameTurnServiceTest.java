@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class GamePlayServiceTest {
+class GameTurnServiceTest {
 
     @Mock
     private GameValidator gameValidatorMock;
@@ -29,7 +29,7 @@ class GamePlayServiceTest {
     private PlayValidator playValidatorMock;
 
     @InjectMocks
-    private GamePlayService subject;
+    private GameTurnService subject;
 
     @Test
     public void shouldAllowPlayerPlayWithoutErrorsAndSaveGameState() {
@@ -54,7 +54,7 @@ class GamePlayServiceTest {
         when(boardValidatorMock.hasEmptySpaces(game.getBoard()))
                 .thenReturn(true);
 
-        var actualGame = subject.playRound(game, PlayerEnum.X, playPosition);
+        var actualGame = subject.playTurn(game, PlayerEnum.X, playPosition);
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
@@ -83,7 +83,7 @@ class GamePlayServiceTest {
         when(playValidatorMock.hasPlayerWon(game.getBoard(), PlayerEnum.X))
                 .thenReturn(true);
 
-        var actualGame = subject.playRound(game, PlayerEnum.X, playPosition);
+        var actualGame = subject.playTurn(game, PlayerEnum.X, playPosition);
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
@@ -114,7 +114,7 @@ class GamePlayServiceTest {
         when(boardValidatorMock.hasEmptySpaces(game.getBoard()))
                 .thenReturn(false);
 
-        var actualGame = subject.playRound(game, PlayerEnum.X, playPosition);
+        var actualGame = subject.playTurn(game, PlayerEnum.X, playPosition);
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
@@ -138,7 +138,7 @@ class GamePlayServiceTest {
                 .thenReturn(false);
 
         assertThrows(GameAlreadyFinishedException.class,
-                () -> subject.playRound(game, PlayerEnum.X, new Position(1,1)));
+                () -> subject.playTurn(game, PlayerEnum.X, new Position(1,1)));
     }
 
     @Test
@@ -163,7 +163,7 @@ class GamePlayServiceTest {
                 .thenReturn(false);
 
         assertThrows(PlayerAlreadyPlayedException.class,
-                () -> subject.playRound(game, PlayerEnum.X, nextPlayPosition));
+                () -> subject.playTurn(game, PlayerEnum.X, nextPlayPosition));
     }
 
     @Test
@@ -187,6 +187,6 @@ class GamePlayServiceTest {
                 .thenReturn(false);
 
         assertThrows(GridPositionNotEmpty.class,
-                () -> subject.playRound(game, PlayerEnum.X, playPosition));
+                () -> subject.playTurn(game, PlayerEnum.X, playPosition));
     }
 }
