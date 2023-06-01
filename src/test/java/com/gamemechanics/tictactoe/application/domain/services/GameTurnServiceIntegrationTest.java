@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("integration-test")
-class GamePlayServiceIntegrationTest {
+class GameTurnServiceIntegrationTest {
 
     @Autowired
-    private GamePlayService subject;
+    private GameTurnService subject;
 
     @Test
     public void shouldAllowPlayerPlayWithoutErrorsAndSaveGameState() {
@@ -39,7 +39,7 @@ class GamePlayServiceIntegrationTest {
                 .build();
         var playPosition = new Position(1, 1);
 
-        var actualGame = subject.playRound(game, PlayerEnum.X, playPosition);
+        var actualGame = subject.playTurn(game, PlayerEnum.X, playPosition);
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
@@ -59,13 +59,13 @@ class GamePlayServiceIntegrationTest {
         var playPosition = new Position(0, 2);
 
         assertDoesNotThrow(() -> {
-            subject.playRound(game, PlayerEnum.X, new Position(0, 0));
-            subject.playRound(game, PlayerEnum.O, new Position(1, 0));
-            subject.playRound(game, PlayerEnum.X, new Position(0, 1));
-            subject.playRound(game, PlayerEnum.O, new Position(1, 1));
+            subject.playTurn(game, PlayerEnum.X, new Position(0, 0));
+            subject.playTurn(game, PlayerEnum.O, new Position(1, 0));
+            subject.playTurn(game, PlayerEnum.X, new Position(0, 1));
+            subject.playTurn(game, PlayerEnum.O, new Position(1, 1));
         });
 
-        var actualGame = subject.playRound(game, PlayerEnum.X, playPosition);
+        var actualGame = subject.playTurn(game, PlayerEnum.X, playPosition);
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
@@ -85,17 +85,17 @@ class GamePlayServiceIntegrationTest {
         var playPosition = new Position(2, 2);
 
         assertDoesNotThrow(() -> {
-            subject.playRound(game, PlayerEnum.X, new Position(0, 0));
-            subject.playRound(game, PlayerEnum.O, new Position(0, 1));
-            subject.playRound(game, PlayerEnum.X, new Position(0, 2));
-            subject.playRound(game, PlayerEnum.O, new Position(1, 1));
-            subject.playRound(game, PlayerEnum.X, new Position(1, 0));
-            subject.playRound(game, PlayerEnum.O, new Position(1, 2));
-            subject.playRound(game, PlayerEnum.X, new Position(2, 1));
-            subject.playRound(game, PlayerEnum.O, new Position(2, 0));
+            subject.playTurn(game, PlayerEnum.X, new Position(0, 0));
+            subject.playTurn(game, PlayerEnum.O, new Position(0, 1));
+            subject.playTurn(game, PlayerEnum.X, new Position(0, 2));
+            subject.playTurn(game, PlayerEnum.O, new Position(1, 1));
+            subject.playTurn(game, PlayerEnum.X, new Position(1, 0));
+            subject.playTurn(game, PlayerEnum.O, new Position(1, 2));
+            subject.playTurn(game, PlayerEnum.X, new Position(2, 1));
+            subject.playTurn(game, PlayerEnum.O, new Position(2, 0));
         });
 
-        var actualGame = subject.playRound(game, PlayerEnum.X, playPosition);
+        var actualGame = subject.playTurn(game, PlayerEnum.X, playPosition);
 
         assertEquals(gameId, actualGame.getId());
         assertEquals(PlayerEnum.X, actualGame.getLastPlay().player());
@@ -114,7 +114,7 @@ class GamePlayServiceIntegrationTest {
                 .build();
 
         assertThrows(GameAlreadyFinishedException.class,
-                () -> subject.playRound(game, PlayerEnum.X, new Position(1,1)));
+                () -> subject.playTurn(game, PlayerEnum.X, new Position(1,1)));
     }
 
     @Test
@@ -127,11 +127,11 @@ class GamePlayServiceIntegrationTest {
                 .build();
 
         final var firstPlayPosition = new Position(0, 1);
-        assertDoesNotThrow(() -> subject.playRound(game, PlayerEnum.X, firstPlayPosition));
+        assertDoesNotThrow(() -> subject.playTurn(game, PlayerEnum.X, firstPlayPosition));
 
         final var nextPlayPosition = new Position(1,1);
         assertThrows(PlayerAlreadyPlayedException.class,
-                () -> subject.playRound(game, PlayerEnum.X, nextPlayPosition));
+                () -> subject.playTurn(game, PlayerEnum.X, nextPlayPosition));
     }
 
     @Test
@@ -144,8 +144,8 @@ class GamePlayServiceIntegrationTest {
                 .build();
         var playPosition = new Position(1,1);
 
-        assertDoesNotThrow(() -> subject.playRound(game, PlayerEnum.X, playPosition));
+        assertDoesNotThrow(() -> subject.playTurn(game, PlayerEnum.X, playPosition));
         assertThrows(GridPositionNotEmpty.class,
-                () -> subject.playRound(game, PlayerEnum.O, playPosition));
+                () -> subject.playTurn(game, PlayerEnum.O, playPosition));
     }
 }

@@ -1,10 +1,12 @@
-package com.gamemechanics.tictactoe.adapters.in.console;
+package com.gamemechanics.tictactoe.application.ports.out;
 
 import com.gamemechanics.tictactoe.application.domain.models.Game;
 import com.gamemechanics.tictactoe.application.domain.models.PlayerEnum;
 import com.gamemechanics.tictactoe.application.domain.models.Position;
 
-public interface AIPlay {
+public interface GameUIPort {
 
-    Position generateAIMove(Game game, PlayerEnum currentPlayer);
+    void updateBoard(Game game);
+
+    Position fetchMove(PlayerEnum currentPlayer);
 }
